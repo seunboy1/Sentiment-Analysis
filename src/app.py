@@ -3,7 +3,7 @@ import joblib
 import pymongo
 import streamlit as st
 from pymongo import MongoClient
-from preprocessing import tfidf_preprocessing
+from src.preprocessing import tfidf_preprocessing
 
 @st.cache(allow_output_mutation=True)
 def load_models():
