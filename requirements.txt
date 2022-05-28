@@ -1,0 +1,8 @@
+nltk
+Flask
+pandas
+joblib
+pymongo
+streamlit
+scikit-learn
+typing-extensions

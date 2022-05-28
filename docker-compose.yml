@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  app:
+    image: biosciences:v1
+    build: .
+    container_name: biosciences_apps
+    command: streamlit run ./app.py
+    ports:
+      - 8501:8501
+    volumes:
+      - .:/src
+    links:
+      - db
+
+  db:
+    image: mongo:latest
+    hostname: test_mongodb
+    container_name: biosciences_db
+    environment:
+      - MONGO_INITDB_DATABASE=test_db
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - ./mongo_volume:/data/db
+    ports:
+      - 27017:27017
