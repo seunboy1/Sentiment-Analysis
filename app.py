@@ -1,6 +1,7 @@
 import os
 import joblib
 import pymongo
+import pandas as pd
 import streamlit as st
 from pymongo import MongoClient
 from preprocessing import tfidf_preprocessing
@@ -20,33 +21,22 @@ def get_db():
                          password='pass',
                         authSource="admin")
     db = client["test_db"]
-
-    mylist = [
-        { "name": "Amy", "address": "Apple st 652"},
-        { "name": "Hannah", "address": "Mountain 21"},
-        { "name": "Michael", "address": "Valley 345"},
-        { "name": "Sandy", "address": "Ocean blvd 2"},
-        { "name": "Betty", "address": "Green Grass 1"},
-        { "name": "Richard", "address": "Sky st 331"},
-        { "name": "Susan", "address": "One way 98"},
-        { "name": "Vicky", "address": "Yellow Garden 2"},
-        { "name": "Ben", "address": "Park Lane 38"},
-        { "name": "William", "address": "Central st 954"},
-        { "name": "Chuck", "address": "Main Road 989"},
-        { "name": "Viola", "address": "Sideway 1633"}
-    ]
-
-    x = db.animal_tb.insert_many(mylist)
+    df = pd.read_csv('data/cleaned_data.csv')
+    data = df.to_dict(orient="records")
+    
+    x = db.data_tb.insert_many(data)
 
     return db
 
-def get_stored_animals():
+def query():
     db=""
     try:
         db = get_db()
-        _animals = db.animal_tb.find()
-        animals = [{"name": animal["name"], "address": animal["address"]} for animal in _animals]
-        return animals
+        data = db.data_tb.find()
+        result = []
+        for item in data[:5]:
+            result.append({"Review": item["review"], "Sentiments": item["sentiment"]})
+        return result
     except:
         pass
     finally:
@@ -99,7 +89,7 @@ if __name__ == "__main__":
                 st.markdown('Please select model type')
             elif model_type == "Tdidf Model": 
                 st.markdown(inference(model_type, review, tdidf_model))
-                st.write( get_stored_animals() )
+                st.write( query() )
             elif model_type == "LSTM Model":  
                 st.markdown(inference(model_type, review, tdidf_model))
             elif model_type == "Transformer Model":  
