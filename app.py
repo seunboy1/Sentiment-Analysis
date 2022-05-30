@@ -53,9 +53,6 @@ def inference(model_type, review, model):
             return "This is a positive review"
         else:
             return "This is a negative review"
-
-    elif model_type == "LSTM Model":
-        pass
     elif model_type == "Transformer Model":
         pass
     pass
@@ -76,7 +73,7 @@ if __name__ == "__main__":
     #---------------------------------#
     # Select model 
     #---------------------------------#
-    model_type =  st.sidebar.selectbox("Select Model", ("Select", "Tdidf Model", "LSTM Model", "Transformer Model"))
+    model_type =  st.sidebar.selectbox("Select Model", ("Select", "Tdidf Model", "Transformer Model"))
 
     #---------------------------------#
     # display sentiment input slot
@@ -88,9 +85,6 @@ if __name__ == "__main__":
             if model_type == "Select":
                 st.markdown('Please select model type')
             elif model_type == "Tdidf Model": 
-                st.markdown(inference(model_type, review, tdidf_model))
-                st.write( query() )
-            elif model_type == "LSTM Model":  
                 st.markdown(inference(model_type, review, tdidf_model))
             elif model_type == "Transformer Model":  
                 st.markdown(inference(model_type, review, tdidf_model))

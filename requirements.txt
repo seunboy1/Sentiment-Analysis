@@ -2,7 +2,9 @@ nltk
 Flask
 pandas
 joblib
+xgboost
 pymongo
 streamlit
+transformers
 scikit-learn
 typing-extensions
